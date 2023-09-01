@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <title>To Do List</title>
+</head>
+<body>
+    <div id="App"></div>
+    <script type="text/babel">
+
+        class Hello extends React.Component{
+            constructor(props){
+                super(props);
+                this.state={
+                    input: "",
+                    task:["Task One","Task Two","Task Three"]
+                }
+            }
+
+            render(){
+                return (
+                    <div>
+                        <h1>Tasks</h1>
+                        <ul>
+                            {
+                                this.state.task.map((task,i)=>
+                                    <li className="keyvalue" key={i}>
+                                        {task}
+                                        <button data-index={i} onClick={this.deletetask}>Delete Task</button>
+                                    </li>
+                                    
+
+                                )
+                            }
+                        </ul>
+                        <div>
+                            <input onKeyPress={this.addtask} onChange={this.handleinput} value={this.state.input} type="text"/>
+                            <button onClick={this.buttonaddtask}>Add Task</button>
+                            Number of Task:{this.state.task.length}
+                        </div>
+                    </div>
+                )
+            }
+
+            deletetask = (event) =>{
+                const index=event.target.dataset.index;
+                const updatedtasks=[...this.state.task]
+                updatedtasks.splice(index,1);
+                this.setState({
+                    task:updatedtasks,
+                })
+            }
+
+            addtask = (event) => {
+                    if (event.key === "Enter"){
+                        this.setState(state=>({
+                            task:[...state.task,state.input],
+                            input:""
+                        }))
+                    }        
+            }
+
+            buttonaddtask = (event) =>{
+                this.setState(state=>({
+                    task:[...state.task,state.input],
+                    input:""
+                }))
+            }
+
+            handleinput = (event) =>{
+                this.setState({
+                    input:event.target.value
+                })
+            }
+        }
+
+        ReactDOM.render(<Hello />,document.querySelector("#App"));
+
+    </script>
+</body>
+</html>
